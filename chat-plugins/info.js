@@ -1020,6 +1020,20 @@ exports.commands = {
 	avatarshelp: ["/avatars - Explains how to change avatars.",
 		"!avatars - Show everyone that information. Requires: + % @ * # & ~"],
 
+	'!optionsbutton': true,
+	optionbutton: 'optionsbutton',
+	optionsbutton: function (target, room, user) {
+		if (!this.runBroadcast()) return;
+		this.sendReplyBox(`<button name="openOptions" class="button"><i style="font-size: 16px; vertical-align: -1px" class="fa fa-cog"></i> Options</button> (The Sound and Options buttons are at the top right, next to your username)`);
+	},
+	'!soundbutton': true,
+	soundsbutton: 'soundbutton',
+	volumebutton: 'soundbutton',
+	soundbutton: function (target, room, user) {
+		if (!this.runBroadcast()) return;
+		this.sendReplyBox(`<button name="openSounds" class="button"><i style="font-size: 16px; vertical-align: -1px" class="fa fa-volume-up"></i> Sound</button> (The Sound and Options buttons are at the top right, next to your username)`);
+	},
+
 	'!intro': true,
 	introduction: 'intro',
 	intro: function (target, room, user) {
@@ -1400,6 +1414,8 @@ exports.commands = {
 			let formatId = extraFormat.id;
 			if (formatId === 'doublesou') {
 				formatId = 'doubles';
+			} else if (formatId === 'balancedhackmons') {
+				formatId = 'bh';
 			} else if (formatId === 'battlespotsingles') {
 				formatId = 'battle_spot_singles';
 			} else if (formatId.includes('vgc')) {
@@ -1442,6 +1458,8 @@ exports.commands = {
 			let formatId = format.id;
 			if (formatId === 'doublesou') {
 				formatId = 'doubles';
+			} else if (formatId === 'balancedhackmons') {
+				formatId = 'bh';
 			} else if (formatId.includes('vgc')) {
 				formatId = 'vgc' + formatId.slice(-2);
 				formatName = 'VGC20' + formatId.slice(-2);

@@ -497,13 +497,13 @@ class Tournament {
 		}
 
 		if (!(userid in this.players)) {
-			sendReply('|tournament|error|UserNotAdded');
+			sendReply('|tournament|error|UserNotAdded|' + userid);
 			return false;
 		}
 
 		let player = this.players[userid];
 		if (this.disqualifiedUsers.get(player)) {
-			sendReply('|tournament|error|AlreadyDisqualified');
+			sendReply('|tournament|error|AlreadyDisqualified|' + userid);
 			return false;
 		}
 
@@ -1063,7 +1063,7 @@ let commands = {
 			}
 			if (tournament.setBanlist(params, this)) {
 				const banlist = tournament.banlist.join(', ');
-				this.room.addRaw("<b>The tournament's banlist now includes:</b> " + banlist + ".");
+				this.room.addRaw("<b>The tournament's banlist is now:</b> " + Chat.escapeHTML(banlist) + ".");
 				this.privateModCommand("(" + user.name + " set the tournament's banlist to " + banlist + ".)");
 			}
 		},

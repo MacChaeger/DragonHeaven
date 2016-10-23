@@ -91,6 +91,9 @@ exports.commands = {
 	'!me': true,
 	mee: 'me',
 	me: function (target, room, user) {
+		if (this.cmd === 'mee' && /[A-Z-a-z0-9/]/.test(target.charAt(0))) {
+			return this.errorReply(`/mee - must not start with a letter or number`);
+		}
 		target = this.canTalk(`/${this.cmd} ${target || ''}`);
 		if (!target) return;
 
@@ -419,6 +422,7 @@ exports.commands = {
 	inv: 'invite',
 	invite: function (target, room, user) {
 		if (!target) return this.parse('/help invite');
+		if (!this.canTalk()) return;
 		if (room) target = this.splitTarget(target) || room.id;
 		let targetRoom = Rooms.search(target);
 		if (targetRoom && !targetRoom.checkModjoin(user)) {
@@ -2385,7 +2389,7 @@ exports.commands = {
 					                 (strictMatch ? "" : " Add quotes to the search parameter to search for a phrase, rather than a user."));
 				} else {
 					connection.popup(`|wide||html|<p>The last ${grepLimit} logged actions containing ${target} on ${roomNames}.` +
-					                 (strictMatch ? "" : " Add quotes to the search parameter to search for a phrase, rather than a user.") + `</p><p><small>[${Chat.toTimestamp(new Date(), {hour12: true})}] ? current server time</small></p>${stdout}`);
+					                 (strictMatch ? "" : " Add quotes to the search parameter to search for a phrase, rather than a user.") + `</p><p><small>[${Chat.toTimestamp(new Date(), {hour12: true})}] \u2190 current server time</small></p>${stdout}`);
 				}
 			}
 		});

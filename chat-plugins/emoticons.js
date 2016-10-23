@@ -89,6 +89,8 @@ if (typeof demFeels.extendEmotes === 'function') {
 		'llamasneaky': 'http://i.imgur.com/uPjrY3P.gif',
 		'llamacry': 'http://i.imgur.com/YWfKiyb.gif',
 		'llamamad': 'http://i.imgur.com/M4qpLQd.gif',
+		'gudone':'http://i.imgur.com/USkp1b9.png',
+		'xoxo':'http://i.imgur.com/Yyw9ICj.png',
 	});
 }
 

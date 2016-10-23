@@ -1,3 +1,4 @@
+'use strict';
 
 // Note: This is the list of formats
 // The rules that formats use are stored in data/rulesets.js
@@ -9,7 +10,7 @@ exports.Formats = [
 	{
 		name: "OU",
 		desc: [
-			"&bullet; <a href=\"https://www.smogon.com/forums/threads/3546114/\">OU Metagame Discussion</a>",
+			"&bullet; <a href=\"https://www.smogon.com/forums/threads/3573990/\">OU Metagame Discussion</a>",
 			"&bullet; <a href=\"https://www.smogon.com/dex/xy/tags/ou/\">OU Banlist</a>",
 			"&bullet; <a href=\"https://www.smogon.com/forums/threads/3571990/\">OU Viability Ranking</a>",
 		],
@@ -68,7 +69,7 @@ exports.Formats = [
 	{
 		name: "PU",
 		desc: [
-			"&bullet; <a href=\"https://www.smogon.com/forums/threads/3575837/\">np: PU Stage 8</a>",
+			"&bullet; <a href=\"https://www.smogon.com/forums/threads/3578583/\">np: PU Stage 9</a>",
 			"&bullet; <a href=\"https://www.smogon.com/forums/threads/3528743/\">PU Viability Ranking</a>",
 		],
 		section: "ORAS Singles",
@@ -80,7 +81,7 @@ exports.Formats = [
 		name: "LC",
 		desc: [
 			"&bullet; <a href=\"https://www.smogon.com/forums/threads/3505710/\">LC Metagame Discussion</a>",
-			"&bullet; <a href=\"https://www.smogon.com/forums/threads/3490462/\">LC Banlist</a>",
+			"&bullet; <a href=\"https://www.smogon.com/dex/xy/formats/lc/\">LC Banlist</a>",
 			"&bullet; <a href=\"https://www.smogon.com/forums/threads/3547566/\">LC Viability Ranking</a>",
 		],
 		section: "ORAS Singles",
@@ -390,7 +391,7 @@ exports.Formats = [
 		section: "Randomized Metas",
 		mod:"openhouse",
 		team: 'random',
-		ruleset: ["Team Preview",'Pokemon', 'Sleep Clause Mod', 'HP Percentage Mod', 'Cancel Mod'],
+		ruleset: ["Team Preview",'Random Battle'],
 		onBegin: function()
 		{
 			this.houses = ["Wonder Room","Trick Room","Magic Room"];
@@ -433,6 +434,39 @@ exports.Formats = [
 				this.add("-message",pokemon.side.foe.pokemon[0].name+" received "+pokemon.name+"'s "+pokemon.lastM.move+"!");
 			}
 		},
+	},
+	{
+	    name: "Top Percentage Randbats",
+	    section: "Randomized Metas",
+	    mod: 'toppercentage',
+	    desc:["&lt; <a href=\"http://www.smogon.com/forums/threads/top-percentage.3564459/\">Top Percentage</a>"],
+	    ruleset: ['Random Battle',"Team Preview"],
+	    team: "random",
+	    onBegin: function() {
+			this.add("raw|Welcome to Top Percentage! The first Player to deal 400% damage wins! HAHAHAH!");
+		for (var i = 0; i < this.sides.length; i++) {
+		    this.sides[i].metaCount = 400;
+		}
+	    },
+	    onAfterDamage: function(damage, target, source, move) {
+		//only should work if does not make target faint
+		let percentage = 100 * damage / target.maxhp;
+		if (damage >= target.hp) {
+		    percentage = 100 * target.hp / target.maxhp;
+		}
+		target.side.metaCount -= percentage;
+		this.add('-message', target.side.name+" has " + Math.round(target.side.metaCount) + "% left!");
+		if (target.side.metaCount <= 0.1) {
+		    //note: making this 0.1 because I got 1.10 times 10^-15 once
+		    //something silly with rounding
+		    //this works well enough
+	            this.add('raw|'+target.side.foe.name+" has dealt 400% damage!");
+		    this.win(target.side.foe);
+		}
+	    },
+		/*onAfterDamage: function(damage, target, source, move) {
+		
+		},*/
 	},
 	{
 		name: "[Seasonal] Fireworks Frenzy",
@@ -2367,7 +2401,7 @@ exports.Formats = [
 		column: 2,
 
 		ruleset: ['Ubers', 'Baton Pass Clause'],
-		banlist: ['Uber > 1', 'AG ++ Uber', 'Blissey', 'Chansey', 'Eviolite', 'Mawilite', 'Medichamite', 'Soul Dew', 'Huge Power', 'Pure Power', 'Shadow Tag'],
+		banlist: ['Uber > 1', 'AG ++ Uber', 'Blissey', 'Chansey', 'Eviolite', 'Mawilite', 'Medichamite', 'Sablenite', 'Soul Dew', 'Huge Power', 'Pure Power', 'Shadow Tag'],
 		onBegin: function () {
 			let stats = ['hp', 'atk', 'def', 'spa', 'spd', 'spe'];
 			for (let j = 0; j < this.sides.length; j++) {
@@ -2478,13 +2512,13 @@ exports.Formats = [
 
 		ruleset: ['Pokemon', 'Standard', 'Ability Clause', 'Baton Pass Clause', 'Swagger Clause', 'Team Preview'],
 		banlist: ['Ignore Illegal Abilities',
-			'Arceus', 'Archeops', 'Bisharp', 'Chatot', 'Darkrai', 'Deoxys', 'Deoxys-Attack', 'Dialga', 'Giratina', 'Giratina-Origin', 'Groudon', 'Ho-Oh',
-			'Hoopa-Unbound', 'Keldeo', 'Kyogre', 'Kyurem-Black', 'Kyurem-White', 'Lugia', 'Mamoswine', 'Mewtwo', 'Palkia', 'Rayquaza', 'Regigigas',
+			'Arceus', 'Archeops', 'Bisharp', 'Chatot', 'Darkrai', 'Deoxys', 'Deoxys-Attack', 'Dialga', 'Dragonite', 'Giratina', 'Giratina-Origin', 'Groudon',
+			'Ho-Oh', 'Hoopa-Unbound', 'Keldeo', 'Kyogre', 'Kyurem-Black', 'Kyurem-White', 'Lugia', 'Mamoswine', 'Mewtwo', 'Palkia', 'Rayquaza', 'Regigigas',
 			'Reshiram', 'Shaymin-Sky', 'Shedinja', 'Slaking', 'Smeargle', 'Snorlax', 'Suicune', 'Terrakion', 'Weavile', 'Xerneas', 'Yveltal', 'Zekrom',
 			'Blazikenite', 'Gengarite', 'Kangaskhanite', 'Lucarionite', 'Mawilite', 'Salamencite', 'Soul Dew', 'Shadow Tag', 'Dynamic Punch', 'Zap Cannon',
 		],
 		onValidateSet: function (set) {
-			let bannedAbilities = {'Aerilate': 1, 'Arena Trap': 1, 'Contrary': 1, 'Fur Coat': 1, 'Huge Power': 1, 'Illusion': 1, 'Imposter': 1, 'Parental Bond': 1, 'Protean': 1, 'Pure Power': 1, 'Simple':1, 'Speed Boost': 1, 'Wonder Guard': 1};
+			let bannedAbilities = {'Arena Trap': 1, 'Contrary': 1, 'Fur Coat': 1, 'Huge Power': 1, 'Illusion': 1, 'Imposter': 1, 'Parental Bond': 1, 'Protean': 1, 'Pure Power': 1, 'Simple':1, 'Speed Boost': 1, 'Wonder Guard': 1};
 			if (set.ability in bannedAbilities) {
 				let template = this.getTemplate(set.species || set.name);
 				let legalAbility = false;
@@ -2633,6 +2667,35 @@ exports.Formats = [
 				this.add("-message",pokemon.side.foe.pokemon[0].name+" received "+pokemon.name+"'s "+pokemon.lastM.move+"!");
 			}
 		},
+	},
+	{
+	    name: "Top Percentage",
+	    section: "Other Metagames",
+	    mod: 'toppercentage',
+	    desc:["&lt; <a href=\"http://www.smogon.com/forums/threads/top-percentage.3564459/\">Top Percentage</a>"],
+	    ruleset: ['OU'],
+	    onBegin: function() {
+			this.add("raw|Welcome to Top Percentage! The first Player to deal 400% damage wins! HAHAHAH!");
+		for (var i = 0; i < this.sides.length; i++) {
+		    this.sides[i].metaCount = 400;
+		}
+	    },
+	    onDamage: function(damage, target) {
+		//only should work if does not make target faint
+		let percentage = 100 * damage / target.maxhp;
+		if (damage >= target.hp) {
+		    percentage = 100 * target.hp / target.maxhp;
+		}
+		target.side.metaCount -= percentage;
+		this.add('-message', target.side.name+" has " + Math.round(target.side.metaCount) + "% left!");
+		if (target.side.metaCount <= 0.1) {
+		    //note: making this 0.1 because I got 1.10 times 10^-15 once
+		    //something silly with rounding
+		    //this works well enough
+	            this.add('-message', target.side.foe.name+" has dealt 400% damage!");
+		    this.win(target.side.foe);
+		}
+	    }
 	},
 	{
 			name:"Partners in Crime",
@@ -3666,33 +3729,79 @@ return problems;
 	   }
    	},
 	{
-		name:"Mirror Move",
+	    name: "Mirror Move",
+	    desc: ["&bullet; <a href=\"http://www.smogon.com/forums/threads/mirror-move.3572990/\">Mirror Move</a>"],
+	    section: "New Other Metagames",
+	    ruleset: ["OU"],
+	    banlist: ["Imprison"],
+	    mod: "mirrormove",
+	    onBegin: function() {
+		for (let p = 0; p < this.sides.length; p++) {
+		    for (let i = 0; i < this.sides[p].pokemon.length; i++) {
+			this.sides[p].pokemon[i].om = [{}]; 
+			this.sides[p].pokemon[i].obm = [{}]; 
+			for (let k in this.sides[p].pokemon[i].baseMoveset[0]) {
+			    this.sides[p].pokemon[i].om[0][k] = this.sides[p].pokemon[i].moveset[0][k];
+			    this.sides[p].pokemon[i].obm[0][k] = this.sides[p].pokemon[i].baseMoveset[0][k];
+			}
+			if (this.sides[p].pokemon[i].baseMoveset[1]) {
+			    this.sides[p].pokemon[i].om[1] = {};
+			    this.sides[p].pokemon[i].obm[1] = {};
+			    for (let k in this.sides[p].pokemon[i].baseMoveset[1]) {
+				this.sides[p].pokemon[i].om[1][k] = this.sides[p].pokemon[i].moveset[1][k];
+				this.sides[p].pokemon[i].obm[1][k] = this.sides[p].pokemon[i].baseMoveset[1][k];
+			    }
+			}
+		    }
+		}
+	    },
+	    onValidateSet(set) {
+		if (set.moves.length > 2)
+		    return ["You are allowed to bring only 2 moves on a Pokemon.", "(" + set.species + " has more than 2 moves)"]
+	    }
+	},
+	{
+		name: "Nature's Fear",
 		section: "New Other Metagames",
 		ruleset:['OU'],
-		desc: ["&bullet; <a href=\"http://www.smogon.com/forums/threads/mirror-move.3572990/\">Mirror Move</a>"],
-		mod:"mirrormove",
-		onBegin: function()
-		{
-			for(let p=0;p<this.sides.length;p++)
-			{
-				for(let i=0;i<this.sides[p].pokemon.length;i++)
-				{
-					this.sides[p].pokemon[i].om = [this.sides[p].pokemon[i].moveset[0]];
-					this.sides[p].pokemon[i].obm = [this.sides[p].pokemon[i].baseMoveset[0]];
-					if(this.sides[p].pokemon[i].baseMoveset[1])
-					{
-						this.sides[p].pokemon[i].om[1] = this.sides[p].pokemon[i].moveset[1];
-						this.sides[p].pokemon[i].obm[1] = this.sides[p].pokemon[i].baseMoveset[1];
-					}
+		desc: ["All pokes have a special \"Intimidate\" on top on their ability, which means it still have their original Ability. This Intimidate lowers opposing stats by 1 stage based on negative (may be changed to positive if it's better) side of the Nature. For example, if you send out a Timid natured pokemon, your opponent's Attack is lowered.",
+		       "&bullet; <a href=\"http://www.smogon.com/forums/threads/natures-fear.3584688/\">Nature's Fear</a>"],
+		onSwitchIn: function (pokemon) {
+			let foeactive = pokemon.side.foe.active, nature = {};
+			if(!this.getNature(pokemon.set.nature).minus) return;
+			nature[this.getNature(pokemon.set.nature).minus]=-1;
+			let activated = false;
+			for (let i = 0; i < foeactive.length; i++) {
+				if (!foeactive[i] || !this.isAdjacent(foeactive[i], pokemon)) continue;
+				if (!activated) {
+					this.add('-ability', pokemon, 'Nature\'s Fear', 'boost');
+					activated = true;
+				}
+				if (foeactive[i].volatiles['substitute']) {
+					this.add('-immune', foeactive[i], '[msg]');
+				} else {
+					this.boost(nature, foeactive[i], pokemon);
 				}
 			}
 		},
-		onValidateSet(set)
-		{
-			let name = (set.name)?set.name:set.species;
-			if(set.moves.length>2)
-				return ["You are allowed to bring only 2 moves on a Pokemon.","("+name+" has more than 2 moves)"]
-		}
+		onAfterMega: function (pokemon) {
+			let foeactive = pokemon.side.foe.active, nature = {};
+			if(!this.getNature(pokemon.set.nature).minus) return;
+			nature[this.getNature(pokemon.set.nature).minus]=-1;
+			let activated = false;
+			for (let i = 0; i < foeactive.length; i++) {
+				if (!foeactive[i] || !this.isAdjacent(foeactive[i], pokemon)) continue;
+				if (!activated) {
+					this.add('-ability', pokemon, 'Nature\'s Fear', 'boost');
+					activated = true;
+				}
+				if (foeactive[i].volatiles['substitute']) {
+					this.add('-immune', foeactive[i], '[msg]');
+				} else {
+					this.boost(nature, foeactive[i], pokemon);
+				}
+			}
+		},
 	},
    	{
         name: "Offensification",
@@ -4143,6 +4252,32 @@ desc:["&bullet;<a href=\"http://www.smogon.com/forums/threads/recyclables.358181
         	}
     	},
 	{
+		name: "Varietype",
+		section: "Experimental Metas",
+		ruleset: ['OU'],
+		onBegin: function()
+		{
+			for(let p=0;p<this.sides.length;p++)
+			{
+				for(let i=0;i<this.sides[p].pokemon.length;i++)
+				{
+					let pokemon = this.sides[p].pokemon[i];
+					if(pokemon.types[1]) this.sides[p].pokemon[i].type2 = this.sides[p].pokemon[i].types[1];
+					if(pokemon.types[0]===pokemon.types[1]) this.sides[p].pokemon[i].types[1] = this.sides[p].pokemon[i].hpType || "Dark";
+				}
+			}
+		},
+		onSwitchInPriority: 1,
+		onSwitchIn: function (pokemon) {
+		        let types = pokemon.types;
+			this.add('-start', pokemon, 'typechange', types.join('/'), '[silent]');
+		},
+		onModifyMove: function(move, pokemon)
+		{
+			if(move.type == pokemon.type2) move.type = pokemon.hpType || "Dark";
+		},
+	},
+	{
 		name: "Enchanted Items Balanced Hackmons",
 		desc: ["&bullet; <a href=\"https://www.smogon.com/forums/threads/3570431/\">Enchanted Items</a>"],
 		section: "Experimental Metas",
@@ -4266,11 +4401,11 @@ desc:["&bullet;<a href=\"http://www.smogon.com/forums/threads/recyclables.358181
 		name: "Frantic Fusions",
 		desc: [
 	     		"&bullet; A non pet mod version of Fusion Evolution. <BR /> &bullet; The resultant Pokemon has the primary types of the parents, and the averaged stats.<br />&bullet;You can choose any ability from the original Pokemon, and you also get the primary ability of the second Pokemon (The one you put in the nickname). <br />&bullet; Use !fuse if needed.",
-	     ],
+	     	],
 		section: "Experimental Metas",
 		mod: 'francticfusions',
 		ruleset: ['Sleep Clause Mod', 'Species Clause', 'OHKO Clause', 'Moody Clause', 'Evasion Moves Clause', 'Endless Battle Clause', 'HP Percentage Mod', 'Cancel Mod', 'Team Preview'],
-		banlist: ["Uber",'Unreleased', 'Shadow Tag', 'Soul Dew',"Assist"],
+		banlist: ["Uber",'Unreleased', 'Shadow Tag', 'Soul Dew', "Assist", "Shedinja", "Huge Power", "Pure Power", 'Medichamite'],
 		onSwitchInPriority: 1,
 		onSwitchIn: function (pokemon) {
 		        let types = pokemon.types;
@@ -4291,12 +4426,14 @@ desc:["&bullet;<a href=\"http://www.smogon.com/forums/threads/recyclables.358181
 		        let template = this.getTemplate(set.species);
 		        let crossTemplate = this.getTemplate(set.name);
 			let problems = [];
+			let banlist= {"shedinja":true,"hugepower":true,"purepower":true};
 			if (!crossTemplate.exists) return;
 			let canHaveAbility = false;
 			if(crossTemplate.isMega) problems.push("You cannot fuse with a Mega Pokemon. ("+set.species+" has nickname "+set.name+")");
 			if(crossTemplate.tier == "Uber") problems.push("You cannot fuse with an Uber. ("+template.species+" has nickname "+crossTemplate.species+")");
+			if(banlist[toId(crossTemplate.species)]) problems.push("Fusing with " + crossTemplate.species + " is banned. ("+template.species+" has nickname "+ crossTemplate.species + ")");
 			for (let a in template.abilities) {
-				if (template.abilities[a] === set.ability) {
+				if ((template.abilities[a] === set.ability) && !banlist[toId(template.abilities[a])]) {
 					canHaveAbility = true;
 				}
 			}
@@ -4357,6 +4494,44 @@ desc:["&bullet;<a href=\"http://www.smogon.com/forums/threads/recyclables.358181
 				}
 			}
 		},
+	},
+	{
+		    name: "Pokebilities",
+		    desc: ["&bullet; <a href=\"http://www.smogon.com/forums/threads/pok%C3%A9bilities.3510241/\">Pokebilities</a>"],
+		    section: "Experimental Metas",
+		    mod: 'pokebilities',
+		    ruleset: ["OU"],
+		    onSwitchInPriority: 1,
+		    onBegin: function() {
+			let statusability = {"aerilate":true,"aurabreak":true,"flashfire":true,"parentalbond":true,"pixilate":true,"refrigerate":true,"sheerforce":true,"slowstart":true,"truant":true,"unburden":true,"zenmode":true};
+		        for (let p = 0; p < this.sides.length; p++) {
+		            for (let i = 0; i < this.sides[p].pokemon.length; i++) {
+		                let pokemon = this.sides[p].pokemon[i];
+		                let template = this.getTemplate(pokemon.species);
+		                this.sides[p].pokemon[i].innates = [];
+		                for (let a in template.abilities) {
+		                    if (toId(template.abilities[a]) != pokemon.ability)
+				    {
+					if(statusability[toId(template.abilities[a])])
+		                        this.sides[p].pokemon[i].innates.push("other" + toId(template.abilities[a]));
+					else
+		                        this.sides[p].pokemon[i].innates.push(toId(template.abilities[a]));
+				    }
+		                }
+		            }
+		        }
+		    },
+		    onSwitchIn: function(pokemon) {
+		        for (let i = 0; i < pokemon.innates.length; i++) {
+		            if (!pokemon.volatiles[pokemon.innates[i]])
+		                pokemon.addVolatile(pokemon.innates[i]);
+		        }
+		    },
+		    onAfterMega: function(pokemon) {
+		        for (let i = 0; i < pokemon.innates.length; i++) {
+		            pokemon.removeVolatile(pokemon.innates[i]);
+		        }
+		    },
 	},
 	{
 		name: "Trademarked Enchantment",

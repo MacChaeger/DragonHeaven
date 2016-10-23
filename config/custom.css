@@ -4,7 +4,7 @@
   **************/
 
   body {
-    background: #EEE url("http://i.imgur.com/JYUBwQr.jpg") no-repeat left fixed;
+    background: #EEE url("http://i.imgur.com/kBU4mQc.png") no-repeat left fixed;
   }
 
 .button{color:black;background:#ff9966!important;border:solid 1px black!important}.menugroup
@@ -27,14 +27,15 @@
   }
 
   .broadcast-blue {
-    background-color: #cccccc;
-    border: 1px solid black;
-    color: black;
-    font-family: sans-serif;
-    padding: 5px;
+    background-image: url(http://www.bar82.com/wp-content/uploads/2014/09/Halloween-Banner.jpg);
+    border: 6px solid #FFA500;
+    color: #01272d;
+    font-family: Jokerman;
+    font-size: 2em;
+    padding: 35px;
     text-align: center;
     margin: 5px;
-    text-shadow: 0px -1px 0px #e6e6e6;
+    text-shadow: 2px 0px 0px #00FF7F;
   }
 
   .broadcast-blue a {
@@ -75,7 +76,10 @@
     border: 1px solid #252F3F;
     box-shadow: none !important;
   }
-
+  .message-announce {
+	  background-color:#088e4b;
+	  color:yellow;
+  }
   .closebutton, .minimizebutton {
     color: #413B45;
   }
@@ -354,7 +358,7 @@
 /*Battle CSS*/
 
   .backdrop {
-    background: url(http://i.imgur.com/wEEDrY9.jpg) !important;
+    background: url(https://img-fotki.yandex.ru/get/16110/7416871.1e/0_7fdd6_17c4d552_XL.jpg) !important;
         opacity: 0.6;
 }
 
@@ -523,6 +527,14 @@
 
   .pm-log, .pm-window.focused .pm-log {
     border-color: #000000;
+}
+.pmnote {
+	color:#FFA000;
+	
+}
+.message-pm {
+	color:#FFA000;
+
 }
 
 .userlist li button:hover {
