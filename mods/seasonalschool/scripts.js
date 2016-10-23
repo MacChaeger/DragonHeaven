@@ -236,29 +236,46 @@ exports.BattleScripts = {
                                         break;
                                 case 11:
                                         this.add('-message', "Last class of the day is Music! I hope you brought some earplugs, because it's about to get noisy!");
-                                        //insert uproar
+                                        let allyActive = this.sides[0].pokemon[0];
+					//allyActive.addVolatile('uproarS');
+					if (allyActive && allyActive.status === 'slp') allyActive.cureStatus();
+					let foeActive = this.sides[1].pokemon[0];
+					//foeActive.addVolatile('uproarS');
+					if (foeActive && foeActive.status === 'slp') foeActive.cureStatus();
                                         break;
                         }
 
                         //console.dir(classType);
                         for(let i=0;i<this.sides.length;i++)
                         {
-                            if (!this.sides[i].pokemon[0].hasType(classType))
-                                    if (this.sides[i].pokemon[0].addType(classType))
-                                            if (classType != '')
-                                                    this.add('-start', this.sides[i].pokemon[0], 'typeadd', classType);
+                        	if (classType != '')
+                            		if (!this.sides[i].pokemon[0].hasType(classType))
+					{
+                                		if (this.sides[i].pokemon[0].addType(classType))
+                                                	this.add('-start', this.sides[i].pokemon[0], 'typeadd', classType);
+					}
+					else if (this.sides[i].pokemon[0].addedType != classType)
+					{
+						this.add('-end', this.sides[i].pokemon[0], 'typeadd', this.sides[i].pokemon[0].addedType);
+						this.sides[i].pokemon[0].addType('');
+					}
                         }
 
                         if (halfHour == 2) {
                                 //pokemon.addVolatile('confusionS');
                                 this.add('-message', "Whoah, there, you two look exhausted! Have you been staying hydrated?");
                         }
+			if (halfHour == 6
                         if (classType == 'Rock') {
                                 let dice = this.random(100);
-                                //if (dice < 25)
-                                //make the pokemon drowsy
+                                if (dice < 25)
+					this.sides[0].pokemon[0].useMove('yawn', this.sides[1].pokemon[0]);
+				dice = this.random(100);
+				if (dice < 25)
+					this.sides[1].pokemon[0].useMove('yawn', this.sides[0].pokemon[0]);
                         }
                         if (classType == 'Fairy')
+<<<<<<< HEAD
 			{
                                 this.add('-message', "Rest up, you've got another big day tomorrow!");
 				for(let i=0;i<this.sides.length;i++)
@@ -272,6 +289,18 @@ exports.BattleScripts = {
 					}
 				}
 		}
+=======
+{
+                                        this.add('-message', "Rest up, you've got another big day tomorrow!");
+                        for(let i=0;i<this.sides.length;i++)
+                        {
+                                        if (this.sides[i].pokemon[0].useMove('rest')) {
+                                        this.sides[i].pokemon[0].statusData.time = 1;
+                                        this.sides[i].pokemon[0].statusData.startTime = 1;
+                                        }
+                        }
+}
+>>>>>>> origin/master
 		this.makeRequest('move');
     }
 };
