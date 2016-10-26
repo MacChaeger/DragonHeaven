@@ -265,7 +265,7 @@ exports.BattleScripts = {
                                 //pokemon.addVolatile('confusionS');
                                 this.add('-message', "Whoah, there, you two look exhausted! Have you been staying hydrated?");
                         }
-			if (halfHour == 6
+			//if (halfHour == 6
                         if (classType == 'Rock') {
                                 let dice = this.random(100);
                                 if (dice < 25)
@@ -275,32 +275,17 @@ exports.BattleScripts = {
 					this.sides[1].pokemon[0].useMove('yawn', this.sides[0].pokemon[0]);
                         }
                         if (classType == 'Fairy')
-<<<<<<< HEAD
 			{
-                                this.add('-message', "Rest up, you've got another big day tomorrow!");
-				for(let i=0;i<this.sides.length;i++)
-				{
-					if (this.sides[i].pokemon[0].setStatus('slp') && !(this.sides[i].pokemon[0].hp >= this.sides[i].pokemon[0].maxhp)) 
+                        	this.add('-message', "Rest up, you've got another big day tomorrow!");
+                        	for(let i=0;i<this.sides.length;i++)
+                        	{
+                                        if (this.sides[i].pokemon[0].useMove('rest'))
 					{
-						this.sides[i].pokemon[0].statusData.time = 3;
-						this.sides[i].pokemon[0].statusData.startTime = 3;
-						this.heal(this.sides[i].pokemon[0].maxhp);
-						this.add('-status', this.sides[i].pokemon[0], 'slp', '[from] move: Rest');
-					}
-				}
-		}
-=======
-{
-                                        this.add('-message', "Rest up, you've got another big day tomorrow!");
-                        for(let i=0;i<this.sides.length;i++)
-                        {
-                                        if (this.sides[i].pokemon[0].useMove('rest')) {
-                                        this.sides[i].pokemon[0].statusData.time = 1;
-                                        this.sides[i].pokemon[0].statusData.startTime = 1;
+                                        	this.sides[i].pokemon[0].statusData.time = 1;
+                                        	this.sides[i].pokemon[0].statusData.startTime = 1;
                                         }
-                        }
-}
->>>>>>> origin/master
+                        	}
+			}
 		this.makeRequest('move');
     }
 };
